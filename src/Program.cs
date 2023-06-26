@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 
-using ConsoleGPT;
-using ConsoleGPT.Skills;
+using Koepalex.CodingPilot;
+using Koepalex.CodingPilot.Configuration;
+using Koepalex.CodingPilot.Skills;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +29,8 @@ builder.ConfigureServices((context, services) =>
 {
     // Setup configuration options
     var configurationRoot = context.Configuration;
-    services.Configure<AzureCognitiveServicesOptions>(configurationRoot.GetSection("AzureCognitiveServices"));
-    services.Configure<OpenAiServiceOptions>(configurationRoot.GetSection("OpenAI"));
+    //services.Configure<AzureCognitiveServicesOptions>(configurationRoot.GetSection("AzureCognitiveServices"));
+    services.Configure<AzureOpenAiServiceOptions>(configurationRoot.GetSection("AzureOpenAI"));
 
     // Add Semantic Kernel
     services.AddSingleton<IKernel>(serviceProvider => Kernel.Builder.Build());
@@ -44,7 +45,7 @@ builder.ConfigureServices((context, services) =>
     services.AddSingleton<ChatSkill>();
 
     // Add the primary hosted service to start the loop.
-    services.AddHostedService<ConsoleGPTService>();
+    services.AddHostedService<CodingPilotService>();
 });
 
 // Build and run the host. This keeps the app running using the HostedService.
